@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\AssuntoDTO;
 use App\Models\Assunto;
+use App\Models\LivroAssunto;
 use RuntimeException;
 
 class AssuntosService
@@ -54,12 +55,16 @@ class AssuntosService
             throw new RuntimeException("Não possível remover o assunto #$id");
         }
 
+        if (LivroAssunto::where('assunto_codas', $id)->get()) {
+            throw new RuntimeException("Não é possível remover o assunto #$id, há um livro vinculado a ele.");
+        }
+
         return $assunto->delete();
     }
 
     public function listAll()
     {
-        $assuntos = Assunto::all();
+        $assuntos = Assunto::orderBy('descricao', 'asc')->get();
 
         $result = $assuntos->map(function ($assunto) {
             return [

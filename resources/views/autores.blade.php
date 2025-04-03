@@ -9,6 +9,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="btn btn-success btn-md" href="/autores/formulario" role="button">Cadastro</a>

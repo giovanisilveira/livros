@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\AutorDTO;
 use App\Models\Autor;
+use App\Models\LivroAutor;
 use RuntimeException;
 
 class AutoresService
@@ -49,17 +50,21 @@ class AutoresService
 
     public function delete($id)
     {
-        $assunto = $this->getById($id);
-        if (!$assunto) {
+        $autor = $this->getById($id);
+        if (!$autor) {
             throw new RuntimeException("Não possível remover o autor #$id");
         }
 
-        return $assunto->delete();
+        if (LivroAutor::where('autor_codau', $id)->get()) {
+            throw new RuntimeException("Não é possível remover o autor #$id, há um livro vinculado a ele.");
+        }
+
+        return $autor->delete();
     }
 
     public function listAll()
     {
-        $autores = Autor::all();
+        $autores = Autor::orderBy('nome', 'asc')->get();
 
         $result = $autores->map(function ($autor) {
             return [

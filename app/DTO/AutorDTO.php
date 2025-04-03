@@ -15,7 +15,7 @@ class AutorDTO extends DTO
         return $this->validate($data);
     }
 
-    private function validate(array $data) : AutorDTO
+    private function validate(array $data): AutorDTO
     {
 
         $rules = [
@@ -29,7 +29,7 @@ class AutorDTO extends DTO
             'nome.max' => 'O nome não pode ter mais de 40 caracteres.',
         ];
 
-        $validator = Validator::make( $data, $rules, $messages);
+        $validator = Validator::make($data, $rules, $messages);
 
         if ($validator->fails()) {
             throw new InvalidArgumentException($validator->errors()->first());

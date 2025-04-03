@@ -13,7 +13,7 @@ class AssuntosController extends Controller
     {
         $assuntos = AssuntosService::init()->list(1);
 
-        return view('assuntos', [ 'assuntos' => $assuntos ]);
+        return view('assuntos', ['assuntos' => $assuntos]);
     }
 
     public function formulario($id = null)
@@ -32,13 +32,13 @@ class AssuntosController extends Controller
             AssuntosService::init()->save($assuntoDTO);
 
             return redirect()
-                    ->route('assuntos')
-                    ->with('success', 'Assunto salvo com sucesso!');
+                ->route('assuntos')
+                ->with('success', 'Assunto salvo com sucesso!');
         } catch (Exception $e) {
             return redirect()
-                    ->route('assuntosform')
-                    ->with('error', $e->getMessage())
-                    ->with('errorData', $data);
+                ->route('assuntosform')
+                ->with('error', $e->getMessage())
+                ->with('errorData', $data);
         }
     }
 
@@ -48,12 +48,12 @@ class AssuntosController extends Controller
             AssuntosService::init()->delete($id);
 
             return redirect()
-                    ->route('assuntos')
-                    ->with('success', 'Assunto removido!');
+                ->route('assuntos')
+                ->with('success', 'Assunto removido!');
         } catch (Exception $e) {
             return redirect()
-                    ->route('assuntos')
-                    ->with('error', $e->getMessage());
+                ->route('assuntos')
+                ->with('error', $e->getMessage());
         }
     }
 }

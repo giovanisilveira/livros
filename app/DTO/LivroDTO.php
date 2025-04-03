@@ -22,7 +22,7 @@ class LivroDTO extends DTO
         return $this->validate($data);
     }
 
-    private function validate(array $data) : LivroDTO
+    private function validate(array $data): LivroDTO
     {
         if (isset($data['valor'])) {
             $data['valor'] = $this->normalizeValor($data['valor']);
@@ -65,7 +65,7 @@ class LivroDTO extends DTO
             'assunto.array' => 'O assunto deve ser um array.',
         ];
 
-        $validator = Validator::make( $data, $rules, $messages);
+        $validator = Validator::make($data, $rules, $messages);
 
         if ($validator->fails()) {
             throw new InvalidArgumentException($validator->errors()->first());

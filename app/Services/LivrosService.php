@@ -18,7 +18,7 @@ class LivrosService
     public function save(LivroDTO $livroDTO)
     {
         DB::beginTransaction();
-        try{
+        try {
             if (empty($livroDTO->codigo)) {
                 $livro = Livro::create($livroDTO->toArray());
             }
@@ -33,7 +33,7 @@ class LivrosService
 
             DB::commit();
             return $livro;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             throw new RuntimeException($e);
         }
@@ -41,7 +41,7 @@ class LivrosService
 
     public function list(int $page = 1, int $qtdItens = 10)
     {
-        $livros = Livro::paginate(
+        $livros = Livro::with(['assuntos:descricao'])->paginate(
             $qtdItens,
             ['*'],
             'page',
@@ -54,6 +54,7 @@ class LivrosService
                 "titulo" => $livro->titulo,
                 "editora" => $livro->editora,
                 "valor" => $livro->valor,
+                "assuntos" => $livro->assuntos->pluck('descricao')->toArray()
             ];
         });
 
@@ -71,11 +72,21 @@ class LivrosService
 
     public function delete($id)
     {
-        $livro = $this->getById($id);
-        if (!$livro) {
-            throw new RuntimeException("Não possível remover o livro #$id");
-        }
+        DB::beginTransaction();
+        try {
+            $livro = $this->getById($id);
+            if (!$livro) {
+                throw new RuntimeException("Não possível remover o livro #$id");
+            }
 
-        return $livro->delete();
+            $livro->autores()->detach();
+            $livro->assuntos()->detach();
+            $livro->delete();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new RuntimeException($e);
+        }
     }
 }

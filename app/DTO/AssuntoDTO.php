@@ -15,7 +15,7 @@ class AssuntoDTO extends DTO
         return $this->validate($data);
     }
 
-    private function validate(array $data) : AssuntoDTO
+    private function validate(array $data): AssuntoDTO
     {
 
         $rules = [
@@ -29,7 +29,7 @@ class AssuntoDTO extends DTO
             'descricao.max' => 'A descrição não pode ter mais de 20 caracteres.',
         ];
 
-        $validator = Validator::make( $data, $rules, $messages);
+        $validator = Validator::make($data, $rules, $messages);
 
         if ($validator->fails()) {
             throw new InvalidArgumentException($validator->errors()->first());

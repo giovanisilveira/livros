@@ -15,7 +15,7 @@ class AutoresController extends Controller
     {
         $autores = AutoresService::init()->list(1);
 
-        return view('autores', [ 'autores' => $autores ]);
+        return view('autores', ['autores' => $autores]);
     }
 
     public function formulario($id = null)
@@ -33,13 +33,13 @@ class AutoresController extends Controller
             AutoresService::init()->save($autorDTO);
 
             return redirect()
-                    ->route('autores')
-                    ->with('success', 'Autor salvo com sucesso!');
+                ->route('autores')
+                ->with('success', 'Autor salvo com sucesso!');
         } catch (Exception $e) {
             return redirect()
-                    ->route('autoresform')
-                    ->with('error', $e->getMessage())
-                    ->with('errorData', $request->all());
+                ->route('autoresform')
+                ->with('error', $e->getMessage())
+                ->with('errorData', $request->all());
         }
     }
 
@@ -49,12 +49,12 @@ class AutoresController extends Controller
             AutoresService::init()->delete($id);
 
             return redirect()
-                    ->route('autores')
-                    ->with('success', 'Autor removido!');
+                ->route('autores')
+                ->with('success', 'Autor removido!');
         } catch (Exception $e) {
             return redirect()
-                    ->route('autores')
-                    ->with('error', $e->getMessage());
+                ->route('autores')
+                ->with('error', $e->getMessage());
         }
     }
 }

@@ -56,7 +56,11 @@
                 <label for="autor" class="form-label">Autores</label>
                 <select class="form-control" id="autor" name="autor[]" multiple="multiple" required>
                     @foreach($autores as $autor)
-                        <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], $livro->autores->pluck('codau')->toArray()) ? 'selected' : '' }}>
+                        @if (isset($livro->autores))
+                            <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], $livro->autores->pluck('codau')->toArray()) ? 'selected' : '' }}>
+                        @else
+                            <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], session('errorData')['autor'] ?? []) ? 'selected' : '' }}>
+                        @endif
                             {{ $autor['nome'] }}
                         </option>
                     @endforeach
@@ -67,7 +71,11 @@
             <label for="assunto" class="form-label">Assunto</label>
                 <select class="form-control" id="assunto" name="assunto[]" multiple="multiple" required>
                     @foreach($assuntos as $assunto)
-                        <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], $livro->assuntos->pluck('codas')->toArray()) ? 'selected' : '' }}>
+                        @if (isset($livro->assuntos))
+                            <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], $livro->assuntos->pluck('codas')->toArray()) ? 'selected' : '' }}>
+                        @else
+                            <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], session('errorData')['assunto'] ?? []) ? 'selected' : '' }}>
+                        @endif
                             {{ $assunto['descricao'] }}
                         </option>
                     @endforeach

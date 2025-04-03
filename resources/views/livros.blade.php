@@ -9,6 +9,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="btn btn-success btn-md" href="/livros/formulario" role="button">Cadastro</a>
@@ -24,6 +30,8 @@
                 <tr>
                     <th width="100px">Código</th>
                     <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Assunto</th>
                     <th width="180px">Ações</th>
                 </tr>
             </thead>
@@ -32,6 +40,8 @@
                     <tr>
                         <td>{{$livro['codigo']}}</td>
                         <td>{{ $livro['titulo'] }}</td>
+                        <td>{{ $livro['valor'] }}</td>
+                        <td>{{ implode(', ', $livro['assuntos']) }}</td>
                         <td>
                             <a href="/livros/formulario/{{$livro['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
                             <form action="{{ route('livrodelete', $livro['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $livro['codigo'] }}">

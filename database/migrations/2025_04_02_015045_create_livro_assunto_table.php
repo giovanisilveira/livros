@@ -21,11 +21,11 @@ return new class extends Migration
 
             $table->foreign('livro_codl')
                   ->references('codl')->on('livro')
-                  ->onDelete('cascade');
+                  ->onDelete('restrict');
 
             $table->foreign('assunto_codas')
                   ->references('codas')->on('assunto')
-                  ->onDelete('cascade');
+                  ->onDelete('restrict');
         });
     }
 
