@@ -18,20 +18,24 @@ class LivrosController extends Controller
         return view('livros', ['livros' => $livros]);
     }
 
-    public function formulario($id = null)
+    public function formulario($id = null, Request $request)
     {
-        $autores = AutoresService::init()->listAll();
-        $assuntos = AssuntosService::init()->listAll();
-        $livro = LivrosService::init()->getById($id, ['autores:codau,nome', 'assuntos:codas,descricao']);
-        if ($livro) {
-            $livro->valor = number_format($livro->valor / 100, 2, ',');
-        }
+        try{
+            $autores = AutoresService::init()->listAll();
+            $assuntos = AssuntosService::init()->listAll();
+            $livro = LivrosService::init()->getById($id, ['autores:codau,nome', 'assuntos:codas,descricao']);
 
-        return view('livrosform', [
-            'livro' => $livro,
-            'autores' => $autores,
-            'assuntos' => $assuntos
-        ]);
+            return view('livrosform', [
+                'livro' => $livro,
+                'autores' => $autores,
+                'assuntos' => $assuntos
+            ]);
+        }catch(Exception $e){
+            return redirect()
+                ->route('livros')
+                ->with('error', $e->getMessage())
+                ->with('errorData', $request->all());
+        }
     }
 
     public function salvar(Request $request)
@@ -45,6 +49,7 @@ class LivrosController extends Controller
                 ->route('livros')
                 ->with('success', 'Livro salvo com sucesso!');
         } catch (Exception $e) {
+            // dd($request->all());
             return redirect()
                 ->route('livrosform')
                 ->with('error', $e->getMessage())

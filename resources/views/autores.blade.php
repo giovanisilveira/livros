@@ -37,7 +37,7 @@
                 @foreach($autores as $autor)
                     <tr>
                         <td>{{$autor['codigo']}}</td>
-                        <td>{{ $autor['nome'] }}</td>
+                        <td>{{$autor['nome']}}</td>
                         <td>
                             <a href="/autores/formulario/{{$autor['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
                             <form action="{{ route('autordelete', $autor['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $autor['codigo'] }}">

@@ -41,7 +41,7 @@
                         <td>{{$livro['codigo']}}</td>
                         <td>{{ $livro['titulo'] }}</td>
                         <td>{{ $livro['valor'] }}</td>
-                        <td>{{ implode(', ', $livro['assuntos']) }}</td>
+                        <td>{{ implode(', ', array_column($livro['assuntos'],'descricao')) }}</td>
                         <td>
                             <a href="/livros/formulario/{{$livro['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
                             <form action="{{ route('livrodelete', $livro['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $livro['codigo'] }}">

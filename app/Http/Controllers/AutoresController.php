@@ -18,11 +18,18 @@ class AutoresController extends Controller
         return view('autores', ['autores' => $autores]);
     }
 
-    public function formulario($id = null)
+    public function formulario($id = null, Request $request)
     {
-        $autor = AutoresService::init()->getById($id);
+        try{
+            $autor = AutoresService::init()->getById($id);
 
-        return view('autoresform', ['autor' => $autor]);
+            return view('autoresform', ['autor' => $autor]);
+        }catch(Exception $e){
+            return redirect()
+                ->route('autores')
+                ->with('error', $e->getMessage())
+                ->with('errorData', $request->all());
+        }
     }
 
     public function salvar(Request $request)

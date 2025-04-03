@@ -25,42 +25,38 @@
         <form action="/livros" method="POST">
             @csrf <!-- Proteção contra CSRF -->
 
-            <input type="hidden" name="codigo" value="{{session('errorData')['codigo'] ?? $livro->codl ?? ''}}">
+            <input type="hidden" name="codigo" value="{{session('errorData')['codigo'] ?? $livro['codigo'] ?? ''}}">
 
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título</label>
-                <input type="text" class="form-control" id="titulo" name="titulo" value="{{session('errorData')['titulo'] ?? $livro->titulo ?? ''}}" required />
+                <input type="text" class="form-control" id="titulo" name="titulo" value="{{session('errorData')['titulo'] ?? $livro['titulo'] ?? ''}}" required />
             </div>
 
             <div class="mb-3">
                 <label for="editora" class="form-label">Editora</label>
-                <input type="text" class="form-control" id="editora" name="editora" value="{{session('errorData')['editora'] ?? $livro->editora ?? ''}}" required />
+                <input type="text" class="form-control" id="editora" name="editora" value="{{session('errorData')['editora'] ?? $livro['editora'] ?? ''}}" required />
             </div>
 
             <div class="mb-3">
                 <label for="edicao" class="form-label">Edição</label>
-                <input type="number" class="form-control" id="edicao" name="edicao" value="{{session('errorData')['edicao'] ?? $livro->edicao ?? ''}}" required />
+                <input type="number" class="form-control" id="edicao" name="edicao" value="{{session('errorData')['edicao'] ?? $livro['edicao'] ?? ''}}" required />
             </div>
 
             <div class="mb-3">
                 <label for="anopublicacao" class="form-label">Ano de Publicação</label>
-                <input type="number" class="form-control" id="anopublicacao" name="anopublicacao" value="{{session('errorData')['anopublicacao'] ?? $livro->anopublicacao ?? ''}}" required />
+                <input type="number" class="form-control" id="anopublicacao" name="anopublicacao" value="{{session('errorData')['anopublicacao'] ?? $livro['anopublicacao'] ?? ''}}" required />
             </div>
 
             <div class="mb-3">
                 <label for="valor" class="form-label">Valor</label>
-                <input type="text" class="form-control" id="valor" name="valor" value="{{session('errorData')['valor'] ?? $livro->valor ?? ''}}" required />
+                <input type="text" class="form-control" id="valor" name="valor" value="{{session('errorData')['valor'] ?? $livro['valor'] ?? ''}}" required />
             </div>
 
             <div class="mb-3">
                 <label for="autor" class="form-label">Autores</label>
                 <select class="form-control" id="autor" name="autor[]" multiple="multiple" required>
                     @foreach($autores as $autor)
-                        @if (isset($livro->autores))
-                            <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], $livro->autores->pluck('codau')->toArray()) ? 'selected' : '' }}>
-                        @else
-                            <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], session('errorData')['autor'] ?? []) ? 'selected' : '' }}>
-                        @endif
+                            <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], session('errorData')['autor'] ?? array_column($livro['autores'],'codau') ?? []) ? 'selected' : '' }}>
                             {{ $autor['nome'] }}
                         </option>
                     @endforeach
@@ -71,11 +67,7 @@
             <label for="assunto" class="form-label">Assunto</label>
                 <select class="form-control" id="assunto" name="assunto[]" multiple="multiple" required>
                     @foreach($assuntos as $assunto)
-                        @if (isset($livro->assuntos))
-                            <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], $livro->assuntos->pluck('codas')->toArray()) ? 'selected' : '' }}>
-                        @else
-                            <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], session('errorData')['assunto'] ?? []) ? 'selected' : '' }}>
-                        @endif
+                            <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], session('errorData')['assunto'] ?? array_column($livro['assuntos'],'codas') ?? []) ? 'selected' : '' }}>
                             {{ $assunto['descricao'] }}
                         </option>
                     @endforeach

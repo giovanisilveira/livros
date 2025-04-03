@@ -37,7 +37,7 @@
                 @foreach($assuntos as $assunto)
                     <tr>
                         <td>{{$assunto['codigo']}}</td>
-                        <td>{{ $assunto['descricao'] }}</td>
+                        <td>{{$assunto['descricao']}}</td>
                         <td>
                             <a href="/assuntos/formulario/{{$assunto['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
                             <form action="{{ route('assuntodelete', $assunto['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $assunto['codigo'] }}">

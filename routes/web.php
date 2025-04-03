@@ -21,7 +21,6 @@ Route::get('/', function () {
 });
 
 Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario'])->name('assuntosform');
-// Route::get('/assuntos/{id}/delete', [AssuntosController::class, 'delete'])->name('delete');
 Route::get('/assuntos', [AssuntosController::class, 'index'])->name('assuntos');
 Route::post('/assuntos', [AssuntosController::class, 'salvar']);
 Route::delete('/assuntos/{id}', [AssuntosController::class, 'delete'])->name('assuntodelete');

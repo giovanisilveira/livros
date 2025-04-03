@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\AutorDTO;
+use App\DTO\AutorOutputDTO;
 use App\Models\Autor;
 use App\Models\LivroAutor;
 use RuntimeException;
@@ -33,29 +34,38 @@ class AutoresService
             $page
         );
 
-        $result = $autores->map(function ($autor) {
-            return [
-                "codigo" => $autor->codau,
-                "nome" => $autor->nome,
-            ];
-        });
-
-        return $result;
+        return AutorOutputDTO::fromArray($autores);
     }
 
     public function getById($id)
     {
-        return Autor::find($id);
+        return AutorOutputDTO::fromObject($this->findById($id));
+    }
+
+    protected function findById($id)
+    {
+        if (empty($id)) {
+            return;
+        }
+
+        $autor = Autor::find($id);
+
+        if (!$autor) {
+            throw new RuntimeException("O autor de código #$id não foi encontrado.");
+        }
+
+        return $autor;
     }
 
     public function delete($id)
     {
-        $autor = $this->getById($id);
+        $autor = $this->findById($id);
+
         if (!$autor) {
             throw new RuntimeException("Não possível remover o autor #$id");
         }
 
-        if (LivroAutor::where('autor_codau', $id)->get()) {
+        if (!LivroAutor::where('autor_codau', $id)->get()->isEmpty()) {
             throw new RuntimeException("Não é possível remover o autor #$id, há um livro vinculado a ele.");
         }
 
@@ -66,13 +76,6 @@ class AutoresService
     {
         $autores = Autor::orderBy('nome', 'asc')->get();
 
-        $result = $autores->map(function ($autor) {
-            return [
-                "codigo" => $autor->codau,
-                "nome" => $autor->nome,
-            ];
-        });
-
-        return $result;
+        return AutorOutputDTO::fromArray($autores);
     }
 }

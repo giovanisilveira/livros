@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\LivroDTO;
+use App\DTO\LivroOutputDTO;
 use App\Models\Livro;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -41,22 +42,14 @@ class LivrosService
 
     public function list(int $page = 1, int $qtdItens = 10)
     {
-        $livros = Livro::with(['assuntos:descricao'])->paginate(
+        $livros = Livro::with(['assuntos'])->paginate(
             $qtdItens,
             ['*'],
             'page',
             $page
         );
 
-        $result = $livros->map(function ($livro) {
-            return [
-                "codigo" => $livro->codl,
-                "titulo" => $livro->titulo,
-                "editora" => $livro->editora,
-                "valor" => $livro->valor,
-                "assuntos" => $livro->assuntos->pluck('descricao')->toArray()
-            ];
-        });
+        $result = LivroOutputDTO::fromArray($livros);
 
         return $result;
     }
@@ -64,17 +57,38 @@ class LivrosService
     public function getById($id, $with = [])
     {
         if (empty($with)) {
-            return Livro::find($id);
+            return LivroOutputDTO::fromObject($this->findById($id));
         }
 
-        return Livro::with($with)->find($id);
+        return LivroOutputDTO::fromObject($this->findById($id, $with));
+    }
+
+    private function findById($id, $with = [])
+    {
+        if (empty($id)) {
+            return;
+        }
+
+        if (empty($with)) {
+            $livro = Livro::find($id);
+        }
+
+        if (!empty($with)) {
+            $livro = Livro::with($with)->find($id);
+        }
+
+        if (!$livro) {
+            throw new RuntimeException("O livro de código #$id não foi encontrado.");
+        }
+
+        return $livro;
     }
 
     public function delete($id)
     {
         DB::beginTransaction();
         try {
-            $livro = $this->getById($id);
+            $livro = $this->findById($id);
             if (!$livro) {
                 throw new RuntimeException("Não possível remover o livro #$id");
             }

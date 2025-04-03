@@ -33,7 +33,7 @@ class LivroDTO extends DTO
             'titulo' => 'required|string|max:40',
             'editora' => 'required|string|max:40',
             'edicao' => 'required|integer|min:1',
-            'anopublicacao' => 'required|digits:4',
+            'anopublicacao' => 'required|digits:4|numeric|min:1900|max:' . Carbon::now()->year,
             'valor' => 'required|integer',
             'autor' => 'required|array',
             'assunto' => 'required|array',
@@ -54,6 +54,8 @@ class LivroDTO extends DTO
 
             'anopublicacao.required' => 'O ano de publicação é obrigatório.',
             'anopublicacao.digits' => 'O ano de publicação deve ser um ano válido (ex: ' . Carbon::now()->year . ').',
+            'anopublicacao.min' => 'O ano de publicação deve ser superior a 1900.',
+            'anopublicacao.max' => 'O ano de publicação não pode ser superior a ' . Carbon::now()->year . '.',
 
             'valor.required' => 'O valor é obrigatório.',
             'valor.integer' => 'O valor deve ser um número.',
