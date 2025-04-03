@@ -25,7 +25,7 @@ class AssuntosService
         return $assunto->update($assuntoDTO->toArray());
     }
 
-    public function list(int $page = 1, int $qtdItens = 10)
+    public function list(int $page = 1, int $qtdItens = 50)
     {
         $assuntos = Assunto::paginate(
             $qtdItens,

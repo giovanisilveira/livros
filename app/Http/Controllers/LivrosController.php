@@ -71,4 +71,11 @@ class LivrosController extends Controller
                 ->with('error', $e->getMessage());
         }
     }
+
+    public function relatorio()
+    {
+        $dadosRelatorio = LivrosService::init()->relatorio();
+
+        return view('relatorio', compact('dadosRelatorio'));
+    }
 }

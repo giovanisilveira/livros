@@ -43,7 +43,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="anopublicacao" class="form-label">Ano de Publicação</label>
+                <label for="anopublicacao" class="form-label">Ano de Publicação <small>(ex: YYYY)</small></label>
                 <input type="number" class="form-control" id="anopublicacao" name="anopublicacao" value="{{session('errorData')['anopublicacao'] ?? $livro['anopublicacao'] ?? ''}}" required />
             </div>
 

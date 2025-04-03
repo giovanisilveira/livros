@@ -25,7 +25,7 @@ class AutoresService
         return $autor->update($autorDTO->toArray());
     }
 
-    public function list(int $page = 1, int $qtdItens = 10)
+    public function list(int $page = 1, int $qtdItens = 50)
     {
         $autores = Autor::paginate(
             $qtdItens,

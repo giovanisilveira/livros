@@ -40,7 +40,7 @@ class LivrosService
         }
     }
 
-    public function list(int $page = 1, int $qtdItens = 10)
+    public function list(int $page = 1, int $qtdItens = 50)
     {
         $livros = Livro::with(['assuntos'])->paginate(
             $qtdItens,
@@ -102,5 +102,14 @@ class LivrosService
             DB::rollBack();
             throw new RuntimeException($e);
         }
+    }
+
+    public function relatorio()
+    {
+        $livrosPorAutor = DB::table('autores_livros')
+        ->orderBy('autor_nome')
+        ->get();
+
+        return $livrosPorAutor->groupBy('autor_nome');
     }
 }
