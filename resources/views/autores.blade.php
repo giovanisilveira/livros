@@ -3,6 +3,12 @@
 @section('title', 'Autores')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="btn btn-success btn-md" href="/autores/formulario" role="button">Cadastro</a>

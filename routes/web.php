@@ -21,12 +21,15 @@ Route::get('/', function () {
 });
 
 Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario']);
-Route::get('/assuntos', [AssuntosController::class, 'index']);
+Route::get('/assuntos', [AssuntosController::class, 'index'])->name('assuntos');
+Route::post('/assuntos', [AssuntosController::class, 'salvar']);
 
 Route::get('/autores/formulario/{id?}', [AutoresController::class, 'formulario']);
-Route::get('/autores', [AutoresController::class, 'index']);
+Route::get('/autores', [AutoresController::class, 'index'])->name('autores');
+Route::post('/autores', [AutoresController::class, 'salvar']);
 
 Route::get('/livros/formulario/{id?}', [LivrosController::class, 'formulario']);
-Route::get('/livros', [LivrosController::class, 'index']);
+Route::get('/livros', [LivrosController::class, 'index'])->name('livros');
+Route::post('/livros', [LivrosController::class, 'salvar']);
 
 Route::get('/teste', [LivrosController::class, 'teste']);

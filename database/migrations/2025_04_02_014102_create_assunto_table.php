@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('assunto', function (Blueprint $table) {
-            $table->id('codas');  // Define 'codas' como chave primária
-            $table->string('descricao', 20);      // Define a coluna 'descricao' com tipo varchar(20)
+            $table->id('codas');
+            $table->string('descricao', 20);
         });
     }
 

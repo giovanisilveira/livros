@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('autor', function (Blueprint $table) {
-            $table->id('codau');  // Define a chave primária 'codau' com auto incremento
-            $table->string('nome', 40); // Cria a coluna 'nome' com tipo varchar(40)
-            $table->timestamps();  // Adiciona created_at e updated_at
+            $table->id('codau');
+            $table->string('nome', 40);
         });
     }
 

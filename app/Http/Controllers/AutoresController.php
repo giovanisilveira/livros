@@ -18,4 +18,9 @@ class AutoresController extends Controller
     {
         return view('autoresform');
     }
+
+    public function salvar(Request $request)
+    {
+        return redirect()->route('autores')->with('success', 'Autor salvo com sucesso!');
+    }
 }

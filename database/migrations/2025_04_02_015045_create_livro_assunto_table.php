@@ -14,20 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('livro_assunto', function (Blueprint $table) {
-            $table->bigInteger('livro_codl')->unsigned();  // Chave estrangeira para a tabela 'livro'
-            $table->bigInteger('assunto_codas')->unsigned(); // Chave estrangeira para a tabela 'assunto'
+            $table->bigInteger('livro_codl')->unsigned();
+            $table->bigInteger('assunto_codas')->unsigned();
 
-            // Definindo as chaves primárias compostas
             $table->primary(['livro_codl', 'assunto_codas']);
 
-            // Adicionando as chaves estrangeiras
             $table->foreign('livro_codl')
                   ->references('codl')->on('livro')
-                  ->onDelete('cascade');  // Ação ao excluir o livro (opcional)
+                  ->onDelete('cascade');
 
             $table->foreign('assunto_codas')
                   ->references('codas')->on('assunto')
-                  ->onDelete('cascade');  // Ação ao excluir o assunto (opcional)
+                  ->onDelete('cascade');
         });
     }
 

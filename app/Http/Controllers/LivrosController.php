@@ -21,6 +21,11 @@ class LivrosController extends Controller
         return view('livrosform');
     }
 
+    public function salvar(Request $request)
+    {
+        return redirect()->route('livros')->with('success', 'Livro salvo com sucesso!');
+    }
+
     public function teste()
     {
         $data = [
