@@ -52,45 +52,22 @@
                 <input type="text" class="form-control" id="valor" name="valor" value="{{session('errorData')['valor'] ?? $livro->valor ?? ''}}" required />
             </div>
 
-            {{--<div class="mb-3">
-                <label for="autor" class="form-label">Autor</label>
-                <select class="form-control" id="autor" name="autor" required>
-                    <option value="">Selecione um autor</option>
-                    @foreach($autores as $autor)
-                        <option value="{{ $autor['codigo'] }}" {{ (session('errorData')['autor'] ?? $livro['autor_id']) == $autor['codigo'] ? 'selected' : '' }}>
-                            {{ $autor['nome'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div> --}}
-
             <div class="mb-3">
                 <label for="autor" class="form-label">Autores</label>
                 <select class="form-control" id="autor" name="autor[]" multiple="multiple" required>
                     @foreach($autores as $autor)
-                        <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], $livro['autores']) ? 'selected' : '' }}>
+                        <option value="{{ $autor['codigo'] }}" {{ in_array($autor['codigo'], $livro->autores->pluck('codau')->toArray()) ? 'selected' : '' }}>
                             {{ $autor['nome'] }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            {{--<div class="mb-3">
-                <label for="assunto" class="form-label">Assunto</label>
-                <select class="form-control" id="assunto" name="assunto" required>
-                    <option value="">Selecione um assunto</option>
-                    @foreach($assuntos as $assunto)
-                        <option value="{{ $assunto['codigo'] }}" {{ (session('errorData')['assunto'] ?? $livro['assunto_id']) == $assunto['codigo'] ? 'selected' : '' }}>
-                            {{ $assunto['descricao'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div> --}}
             <div class="mb-3">
             <label for="assunto" class="form-label">Assunto</label>
                 <select class="form-control" id="assunto" name="assunto[]" multiple="multiple" required>
                     @foreach($assuntos as $assunto)
-                        <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], $livro['assuntos']) ? 'selected' : '' }}>
+                        <option value="{{ $assunto['codigo'] }}" {{ in_array($assunto['codigo'], $livro->assuntos->pluck('codas')->toArray()) ? 'selected' : '' }}>
                             {{ $assunto['descricao'] }}
                         </option>
                     @endforeach

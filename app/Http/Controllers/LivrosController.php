@@ -22,10 +22,8 @@ class LivrosController extends Controller
     {
         $autores = AutoresService::init()->listAll();
         $assuntos = AssuntosService::init()->listAll();
-        // $livro = [ 'assunto_id' => 2, 'autor_id' => 2];
-        $livro = LivrosService::init()->getById($id);
-        $livro['autores'] = [1 => ['nome' => 'teste'], 2 => ['nome' => 'teste 2']];
-        $livro['assuntos'] = [1 => ['descricao' => 'teste'], 2 => ['descricao' => 'teste 2']];
+        $livro = LivrosService::init()->getById($id, ['autores:codau,nome', 'assuntos:codas,descricao']);
+        $livro->valor = number_format($livro->valor/100, 2, ',');
 
         return view('livrosform', [
             'livro' => $livro,
@@ -36,7 +34,6 @@ class LivrosController extends Controller
 
     public function salvar(Request $request)
     {
-        dd($request->all());
         try {
             $livroDTO = (new LivroDTO($request->all()));
 

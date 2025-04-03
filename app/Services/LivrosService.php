@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\DTO\LivroDTO;
 use App\Models\Livro;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class LivrosService
@@ -15,12 +17,26 @@ class LivrosService
 
     public function save(LivroDTO $livroDTO)
     {
-        if (empty($livroDTO->codigo)) {
-            return Livro::create($livroDTO->toArray());
-        }
+        DB::beginTransaction();
+        try{
+            if (empty($livroDTO->codigo)) {
+                $livro = Livro::create($livroDTO->toArray());
+            }
 
-        $livro = Livro::find($livroDTO->codigo);
-        return $livro->update($livroDTO->toArray());
+            if (!empty($livroDTO->codigo)) {
+                $livro = Livro::find($livroDTO->codigo);
+                $livro->update($livroDTO->toArray());
+            }
+
+            $livro->autores()->sync($livroDTO->autor);
+            $livro->assuntos()->sync($livroDTO->assunto);
+
+            DB::commit();
+            return $livro;
+        }catch(Exception $e){
+            DB::rollBack();
+            throw new RuntimeException($e);
+        }
     }
 
     public function list(int $page = 1, int $qtdItens = 10)
@@ -44,9 +60,13 @@ class LivrosService
         return $result;
     }
 
-    public function getById($id)
+    public function getById($id, $with = [])
     {
-        return Livro::find($id);
+        if (empty($with)) {
+            return Livro::find($id);
+        }
+
+        return Livro::with($with)->find($id);
     }
 
     public function delete($id)

@@ -35,8 +35,8 @@ class LivroDTO extends DTO
             'edicao' => 'required|integer|min:1',
             'anopublicacao' => 'required|digits:4',
             'valor' => 'required|integer',
-            'autor' => 'required|integer|min:1',
-            'assunto' => 'required|integer|min:1',
+            'autor' => 'required|array',
+            'assunto' => 'required|array',
         ];
 
         $messages = [
@@ -59,12 +59,10 @@ class LivroDTO extends DTO
             'valor.integer' => 'O valor deve ser um número.',
 
             'autor.required' => 'O autor é obrigatório.',
-            'autor.integer' => 'O autor deve ser um número inteiro.',
-            'autor.min' => 'O autor deve ser maior selecionado.',
+            'autor.array' => 'O autor deve ser um array.',
 
             'assunto.required' => 'O assunto é obrigatório.',
-            'assunto.integer' => 'O assunto deve ser um número inteiro.',
-            'assunto.min' => 'O assunto deve ser maior selecionado.',
+            'assunto.array' => 'O assunto deve ser um array.',
         ];
 
         $validator = Validator::make( $data, $rules, $messages);
