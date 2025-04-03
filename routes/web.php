@@ -20,7 +20,7 @@ Route::get('/', function () {
     return redirect('/livros');
 });
 
-Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario']);
+Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario'])->name('assuntosform');
 Route::get('/assuntos', [AssuntosController::class, 'index'])->name('assuntos');
 Route::post('/assuntos', [AssuntosController::class, 'salvar']);
 

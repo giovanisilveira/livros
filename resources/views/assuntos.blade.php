@@ -5,8 +5,8 @@
 @section('content')
     @if(session('success'))
         <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
+            {{ session('success') }}
+        </div>
     @endif
 
     <ul class="navbar-nav">
@@ -15,10 +15,31 @@
         </li>
     </ul>
 
-    <div class="jumbotron">
-        <h1 class="display-4">Assuntos</h1>
-        <p class="lead">Esta é uma página inicial simples usando o Bootstrap no Laravel Blade.</p>
-        <hr class="my-4">
-        <p>Use o Bootstrap para criar interfaces bonitas rapidamente.</p>
-    </div>
+    <h1 class="display-7">Assuntos</h1>
+    <hr class="my-4">
+
+    <div class="container mt-4">
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th width="100px">Código</th>
+                <th>Descrição</th>
+                <th width="180px">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($assuntos as $assunto)
+                <tr>
+                    <td>{{$assunto['codigo']}}</td>
+                    <td>{{ $assunto['descricao'] }}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+                        <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection

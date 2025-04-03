@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\AssuntoDTO;
+use App\Services\AssuntosService;
+use Exception;
 use Illuminate\Http\Request;
 
 class AssuntosController extends Controller
 {
     public function index()
     {
-        return view('assuntos');
+        $assuntos = AssuntosService::init()->list(1);
+
+        return view('assuntos', [ 'assuntos' => $assuntos ]);
     }
 
     public function formulario($id = null)
@@ -18,6 +23,20 @@ class AssuntosController extends Controller
 
     public function salvar(Request $request)
     {
-        return redirect()->route('assuntos')->with('success', 'Assunto salvo com sucesso!');
+        try {
+            $assuntoDTO = (new AssuntoDTO($request->all()));
+
+            AssuntosService::init()->create($assuntoDTO);
+
+            return redirect()
+                    ->route('assuntos')
+                    ->with('success', 'Assunto salvo com sucesso!');
+        } catch (Exception $e) {
+            return redirect()
+                    ->route('assuntosform')
+                    ->with('error', $e->getMessage())
+                    ->with('errorData', $request->all());
+        }
+
     }
 }

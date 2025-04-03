@@ -3,6 +3,12 @@
 @section('title', 'Assuntos')
 
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="btn btn-primary btn-md" href="/assuntos" role="button">Voltar</a>
@@ -20,7 +26,7 @@
 
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição do Assunto</label>
-                <input type="text" class="form-control" id="descricao" name="descricao" required/>
+                <input type="text" class="form-control" id="descricao" name="descricao" value="{{session('errorData')['descricao'] ?? ''}}" required/>
             </div>
 
             <button type="submit" class="btn btn-primary">Salvar</button>
