@@ -56,4 +56,18 @@ class AutoresService
 
         return $assunto->delete();
     }
+
+    public function listAll()
+    {
+        $autores = Autor::all();
+
+        $result = $autores->map(function ($autor) {
+            return [
+                "codigo" => $autor->codau,
+                "nome" => $autor->nome,
+            ];
+        });
+
+        return $result;
+    }
 }

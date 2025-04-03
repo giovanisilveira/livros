@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\LivroDTO;
 use App\Models\Livro;
+use RuntimeException;
 
 class LivrosService
 {
@@ -12,9 +13,14 @@ class LivrosService
         return new LivrosService();
     }
 
-    public function create(LivroDTO $livroDTO)
+    public function save(LivroDTO $livroDTO)
     {
-        return Livro::create($livroDTO->toArray());
+        if (empty($livroDTO->codigo)) {
+            return Livro::create($livroDTO->toArray());
+        }
+
+        $livro = Livro::find($livroDTO->codigo);
+        return $livro->update($livroDTO->toArray());
     }
 
     public function list(int $page = 1, int $qtdItens = 10)
@@ -28,6 +34,7 @@ class LivrosService
 
         $result = $livros->map(function ($livro) {
             return [
+                "codigo" => $livro->codl,
                 "titulo" => $livro->titulo,
                 "editora" => $livro->editora,
                 "valor" => $livro->valor,
@@ -35,5 +42,20 @@ class LivrosService
         });
 
         return $result;
+    }
+
+    public function getById($id)
+    {
+        return Livro::find($id);
+    }
+
+    public function delete($id)
+    {
+        $livro = $this->getById($id);
+        if (!$livro) {
+            throw new RuntimeException("Não possível remover o livro #$id");
+        }
+
+        return $livro->delete();
     }
 }

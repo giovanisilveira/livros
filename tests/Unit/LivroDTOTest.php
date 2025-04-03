@@ -25,6 +25,8 @@ class LivroDTOTest extends TestCase
             'edicao' => 10,
             'anopublicacao' => '2000',
             'valor' => '99.99',
+            'autor' => 1,
+            'assunto' => 1,
         ];
 
         $livroDTO = new LivroDTO($data);
@@ -35,6 +37,8 @@ class LivroDTOTest extends TestCase
         $this->assertEquals(10, $livroDTO->edicao);
         $this->assertEquals('2000', $livroDTO->anopublicacao);
         $this->assertEquals(9999, $livroDTO->valor);
+        $this->assertEquals(1, $livroDTO->autor);
+        $this->assertEquals(1, $livroDTO->assunto);
     }
 
     public function testDeveRetornarErroCasoTituloNaoSejaInformado()
@@ -232,7 +236,9 @@ class LivroDTOTest extends TestCase
                 'editora' => 'HarperCollins',
                 'edicao' => 10,
                 'anopublicacao' => 2023,
-                'valor' => 'R$ 10,99'
+                'valor' => 'ABC',
+                'autor' => 1,
+                'assunto' => 1,
             ];
 
             $livroDTO = new LivroDTO($data);
@@ -252,7 +258,9 @@ class LivroDTOTest extends TestCase
                 'editora' => 'HarperCollins',
                 'edicao' => 10,
                 'anopublicacao' => 2023,
-                'valor' => '99'
+                'valor' => '99',
+                'autor' => 1,
+                'assunto' => 1,
             ];
 
             $livroDTO = new LivroDTO($data);
@@ -273,7 +281,9 @@ class LivroDTOTest extends TestCase
                 'editora' => 'HarperCollins',
                 'edicao' => 10,
                 'anopublicacao' => 2023,
-                'valor' => 99.10
+                'valor' => 99.10,
+                'autor' => 1,
+                'assunto' => 1,
             ];
 
             $livroDTO = new LivroDTO($data);
@@ -294,7 +304,9 @@ class LivroDTOTest extends TestCase
                 'editora' => 'HarperCollins',
                 'edicao' => 10,
                 'anopublicacao' => 2023,
-                'valor' => '19,41'
+                'valor' => '19,41',
+                'autor' => 1,
+                'assunto' => 1,
             ];
 
             $livroDTO = new LivroDTO($data);
@@ -315,7 +327,9 @@ class LivroDTOTest extends TestCase
                 'editora' => 'HarperCollins',
                 'edicao' => 10,
                 'anopublicacao' => 2023,
-                'valor' => '1.000,33'
+                'valor' => '1.000,33',
+                'autor' => 1,
+                'assunto' => 1,
             ];
 
             $livroDTO = new LivroDTO($data);

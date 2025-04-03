@@ -15,17 +15,44 @@
         </li>
     </ul>
 
-    <div class="jumbotron">
-        <h1 class="display-4">Livros</h1>
-        <p class="lead">Esta é uma página inicial simples usando o Bootstrap no Laravel Blade.</p>
-        <hr class="my-4">
-        <p>Use o Bootstrap para criar interfaces bonitas rapidamente.</p>
+    <h1 class="display-7">Livros</h1>
+    <hr class="my-4">
+
+    <div class="container mt-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th width="100px">Código</th>
+                    <th>Nome</th>
+                    <th width="180px">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($livros as $livro)
+                    <tr>
+                        <td>{{$livro['codigo']}}</td>
+                        <td>{{ $livro['titulo'] }}</td>
+                        <td>
+                            <a href="/livros/formulario/{{$livro['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
+                            <form action="{{ route('livrodelete', $livro['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $livro['codigo'] }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $livro['codigo'] }})">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
-    <ul>
-    @foreach($livros as $livro)
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Tem certeza que deseja excluir este livro?")) {
+                return document.getElementById('delete-form-' + id).submit();
+            }
 
-            <li>{{ $livro['titulo'] }} - {{ $livro['editora'] }} - {{ $livro['valor'] }}</li>
-    @endforeach
-    </ul>
+            return false;
+        }
+    </script>
 @endsection

@@ -56,4 +56,18 @@ class AssuntosService
 
         return $assunto->delete();
     }
+
+    public function listAll()
+    {
+        $assuntos = Assunto::all();
+
+        $result = $assuntos->map(function ($assunto) {
+            return [
+                "codigo" => $assunto->codas,
+                "descricao" => $assunto->descricao,
+            ];
+        });
+
+        return $result;
+    }
 }

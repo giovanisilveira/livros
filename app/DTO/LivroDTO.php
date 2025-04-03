@@ -8,11 +8,14 @@ use InvalidArgumentException;
 
 class LivroDTO extends DTO
 {
+    public $codigo;
     public $titulo;
     public $editora;
     public $edicao;
     public $anopublicacao;
     public $valor;
+    public $autor;
+    public $assunto;
 
     public function __construct(array $data)
     {
@@ -26,11 +29,14 @@ class LivroDTO extends DTO
         }
 
         $rules = [
+            'codigo' => 'nullable|integer',
             'titulo' => 'required|string|max:40',
             'editora' => 'required|string|max:40',
             'edicao' => 'required|integer|min:1',
             'anopublicacao' => 'required|digits:4',
             'valor' => 'required|integer',
+            'autor' => 'required|integer|min:1',
+            'assunto' => 'required|integer|min:1',
         ];
 
         $messages = [
@@ -51,6 +57,14 @@ class LivroDTO extends DTO
 
             'valor.required' => 'O valor é obrigatório.',
             'valor.integer' => 'O valor deve ser um número.',
+
+            'autor.required' => 'O autor é obrigatório.',
+            'autor.integer' => 'O autor deve ser um número inteiro.',
+            'autor.min' => 'O autor deve ser maior selecionado.',
+
+            'assunto.required' => 'O assunto é obrigatório.',
+            'assunto.integer' => 'O assunto deve ser um número inteiro.',
+            'assunto.min' => 'O assunto deve ser maior selecionado.',
         ];
 
         $validator = Validator::make( $data, $rules, $messages);
@@ -59,11 +73,14 @@ class LivroDTO extends DTO
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
+        $this->codigo = $data['codigo'] ?? null;
         $this->titulo = $data['titulo'];
         $this->editora = $data['editora'];
         $this->edicao = $data['edicao'];
         $this->anopublicacao = $data['anopublicacao'];
         $this->valor = $data['valor'];
+        $this->autor = $data['autor'];
+        $this->assunto = $data['assunto'];
 
         return $this;
     }
@@ -71,11 +88,14 @@ class LivroDTO extends DTO
     public function toArray(): array
     {
         return [
+            'codigo' => $this->codigo,
             'titulo' => $this->titulo,
             'editora' => $this->editora,
             'edicao' => $this->edicao,
             'anopublicacao' => $this->anopublicacao,
             'valor' => $this->valor,
+            'autor' => $this->autor,
+            'assunto' => $this->assunto,
         ];
     }
 }
