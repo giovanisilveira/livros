@@ -34,11 +34,25 @@
                         <td>{{ $autor['nome'] }}</td>
                         <td>
                             <a href="/autores/formulario/{{$autor['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
-                            <a href="/autores/{{$autor['codigo']}}/delete" class="btn btn-danger btn-sm">Excluir</a>
+                            <form action="{{ route('autordelete', $autor['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $autor['codigo'] }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $autor['codigo'] }})">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Tem certeza que deseja excluir este autor?")) {
+                return document.getElementById('delete-form-' + id).submit();
+            }
+
+            return false;
+        }
+    </script>
 @endsection

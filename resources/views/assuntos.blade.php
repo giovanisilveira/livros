@@ -34,11 +34,25 @@
                         <td>{{ $assunto['descricao'] }}</td>
                         <td>
                             <a href="/assuntos/formulario/{{$assunto['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
-                            <a href="/assuntos/{{$assunto['codigo']}}/delete" class="btn btn-danger btn-sm">Excluir</a>
+                            <form action="{{ route('assuntodelete', $assunto['codigo']) }}" method="POST" style="display:inline;" id="delete-form-{{ $assunto['codigo'] }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $assunto['codigo'] }})">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Tem certeza que deseja excluir este asunto?")) {
+                return document.getElementById('delete-form-' + id).submit();
+            }
+
+            return false;
+        }
+    </script>
 @endsection

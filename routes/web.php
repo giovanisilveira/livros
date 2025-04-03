@@ -21,14 +21,15 @@ Route::get('/', function () {
 });
 
 Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario'])->name('assuntosform');
-Route::get('/assuntos/{id}/delete', [AssuntosController::class, 'delete'])->name('delete');
+// Route::get('/assuntos/{id}/delete', [AssuntosController::class, 'delete'])->name('delete');
 Route::get('/assuntos', [AssuntosController::class, 'index'])->name('assuntos');
 Route::post('/assuntos', [AssuntosController::class, 'salvar']);
+Route::delete('/assuntos/{id}', [AssuntosController::class, 'delete'])->name('assuntodelete');
 
 Route::get('/autores/formulario/{id?}', [AutoresController::class, 'formulario'])->name('autoresform');
-Route::get('/autores/{id}/delete', [AutoresController::class, 'delete'])->name('delete');
 Route::get('/autores', [AutoresController::class, 'index'])->name('autores');
 Route::post('/autores', [AutoresController::class, 'salvar']);
+Route::delete('/autores/{id}', [AutoresController::class, 'delete'])->name('autordelete');
 
 Route::get('/livros/formulario/{id?}', [LivrosController::class, 'formulario']);
 Route::get('/livros', [LivrosController::class, 'index'])->name('livros');
