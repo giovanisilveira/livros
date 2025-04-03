@@ -21,10 +21,12 @@ Route::get('/', function () {
 });
 
 Route::get('/assuntos/formulario/{id?}', [AssuntosController::class, 'formulario'])->name('assuntosform');
+Route::get('/assuntos/{id}/delete', [AssuntosController::class, 'delete'])->name('delete');
 Route::get('/assuntos', [AssuntosController::class, 'index'])->name('assuntos');
 Route::post('/assuntos', [AssuntosController::class, 'salvar']);
 
-Route::get('/autores/formulario/{id?}', [AutoresController::class, 'formulario']);
+Route::get('/autores/formulario/{id?}', [AutoresController::class, 'formulario'])->name('autoresform');
+Route::get('/autores/{id}/delete', [AutoresController::class, 'delete'])->name('delete');
 Route::get('/autores', [AutoresController::class, 'index'])->name('autores');
 Route::post('/autores', [AutoresController::class, 'salvar']);
 

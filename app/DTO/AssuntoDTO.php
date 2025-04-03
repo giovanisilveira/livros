@@ -7,6 +7,7 @@ use InvalidArgumentException;
 
 class AssuntoDTO extends DTO
 {
+    public $codigo;
     public $descricao;
 
     public function __construct(array $data)
@@ -18,6 +19,7 @@ class AssuntoDTO extends DTO
     {
 
         $rules = [
+            'codigo' => 'nullable|integer',
             'descricao' => 'required|string|max:20',
         ];
 
@@ -33,6 +35,7 @@ class AssuntoDTO extends DTO
             throw new InvalidArgumentException($validator->errors()->first());
         }
 
+        $this->codigo = $data['codigo'] ?? null;
         $this->descricao = $data['descricao'];
 
         return $this;

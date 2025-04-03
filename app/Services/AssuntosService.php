@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\AssuntoDTO;
 use App\Models\Assunto;
+use RuntimeException;
 
 class AssuntosService
 {
@@ -12,9 +13,14 @@ class AssuntosService
         return new AssuntosService();
     }
 
-    public function create(AssuntoDTO $assuntoDTO)
+    public function save(AssuntoDTO $assuntoDTO)
     {
-        return Assunto::create($assuntoDTO->toArray());
+        if (empty($assuntoDTO->codigo)) {
+            return Assunto::create($assuntoDTO->toArray());
+        }
+
+        $assunto = Assunto::find($assuntoDTO->codigo);
+        return $assunto->update($assuntoDTO->toArray());
     }
 
     public function list(int $page = 1, int $qtdItens = 10)
@@ -34,5 +40,20 @@ class AssuntosService
         });
 
         return $result;
+    }
+
+    public function getById($id)
+    {
+        return Assunto::find($id);
+    }
+
+    public function delete($id)
+    {
+        $assunto = $this->getById($id);
+        if (!$assunto) {
+            throw new RuntimeException("Não possível remover o assunto #$id");
+        }
+
+        return $assunto->delete();
     }
 }

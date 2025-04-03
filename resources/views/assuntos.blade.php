@@ -19,27 +19,26 @@
     <hr class="my-4">
 
     <div class="container mt-4">
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th width="100px">Código</th>
-                <th>Descrição</th>
-                <th width="180px">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($assuntos as $assunto)
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{$assunto['codigo']}}</td>
-                    <td>{{ $assunto['descricao'] }}</td>
-                    <td>
-                        <a href="#" class="btn btn-primary btn-sm">Alterar</a>
-                        <a href="#" class="btn btn-danger btn-sm">Excluir</a>
-                    </td>
+                    <th width="100px">Código</th>
+                    <th>Descrição</th>
+                    <th width="180px">Ações</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach($assuntos as $assunto)
+                    <tr>
+                        <td>{{$assunto['codigo']}}</td>
+                        <td>{{ $assunto['descricao'] }}</td>
+                        <td>
+                            <a href="/assuntos/formulario/{{$assunto['codigo']}}" class="btn btn-primary btn-sm">Alterar</a>
+                            <a href="/assuntos/{{$assunto['codigo']}}/delete" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

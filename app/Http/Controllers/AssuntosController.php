@@ -18,15 +18,18 @@ class AssuntosController extends Controller
 
     public function formulario($id = null)
     {
-        return view('assuntosform');
+        $assunto = AssuntosService::init()->getById($id);
+
+        return view('assuntosform', ['assunto' => $assunto]);
     }
 
     public function salvar(Request $request)
     {
         try {
-            $assuntoDTO = (new AssuntoDTO($request->all()));
+            $data = $request->all();
 
-            AssuntosService::init()->create($assuntoDTO);
+            $assuntoDTO = (new AssuntoDTO($data));
+            AssuntosService::init()->save($assuntoDTO);
 
             return redirect()
                     ->route('assuntos')
@@ -35,8 +38,22 @@ class AssuntosController extends Controller
             return redirect()
                     ->route('assuntosform')
                     ->with('error', $e->getMessage())
-                    ->with('errorData', $request->all());
+                    ->with('errorData', $data);
         }
+    }
 
+    public function delete(int $id)
+    {
+        try {
+            AssuntosService::init()->delete($id);
+
+            return redirect()
+                    ->route('assuntos')
+                    ->with('success', 'Assunto removido!');
+        } catch (Exception $e) {
+            return redirect()
+                    ->route('assuntos')
+                    ->with('error', $e->getMessage());
+        }
     }
 }
