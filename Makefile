@@ -14,7 +14,7 @@ restart: stop start
 logs:
 	$(DOCKER_COMPOSE) logs -f
 
-rebuild:
+build:
 	$(DOCKER_COMPOSE) up --build -d
 
 bash:

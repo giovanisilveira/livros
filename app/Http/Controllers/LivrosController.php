@@ -24,7 +24,7 @@ class LivrosController extends Controller
         try{
             $autores = AutoresService::init()->listAll();
             $assuntos = AssuntosService::init()->listAll();
-            $livro = LivrosService::init()->getById($id, ['autores:codau,nome', 'assuntos:codas,descricao']);
+            $livro = LivrosService::init()->getById((int) $id, ['autores:codau,nome', 'assuntos:codas,descricao']);
 
             return view('livrosform', [
                 'livro' => $livro,
@@ -50,7 +50,6 @@ class LivrosController extends Controller
                 ->route('livros')
                 ->with('success', 'Livro salvo com sucesso!');
         } catch (Exception $e) {
-            // dd($request->all());
             return redirect()
                 ->route('livrosform')
                 ->with('error', $e->getMessage())

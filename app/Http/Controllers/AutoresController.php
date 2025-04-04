@@ -21,7 +21,7 @@ class AutoresController extends Controller
     public function formulario($id = null, Request $request)
     {
         try{
-            $autor = AutoresService::init()->getById($id);
+            $autor = AutoresService::init()->getById((int) $id);
 
             return view('autoresform', ['autor' => $autor]);
         }catch(Exception $e){

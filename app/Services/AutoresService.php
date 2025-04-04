@@ -10,11 +10,17 @@ use RuntimeException;
 
 class AutoresService
 {
+    /**
+     * Inicializador do service
+     */
     static public function init(): AutoresService
     {
         return new AutoresService();
     }
 
+    /**
+     * Método responsável por salvar os dados de um Autor
+     */
     public function save(AutorDTO $autorDTO)
     {
         if (empty($autorDTO->codigo)) {
@@ -25,6 +31,9 @@ class AutoresService
         return $autor->update($autorDTO->toArray());
     }
 
+    /**
+     * Método responsável por recuperar os dados dos autores
+     */
     public function list(int $page = 1, int $qtdItens = 50)
     {
         $autores = Autor::paginate(
@@ -37,11 +46,17 @@ class AutoresService
         return AutorOutputDTO::fromArray($autores);
     }
 
-    public function getById($id)
+    /**
+     * Método responsável por recuperar os dados de um autor pelo código informado
+     */
+    public function getById(int $id)
     {
         return AutorOutputDTO::fromObject($this->findById($id));
     }
 
+    /**
+     * Método interno para recuperar os dados de um autor por código sem formatação dos dados
+     */
     protected function findById($id)
     {
         if (empty($id)) {
@@ -57,6 +72,9 @@ class AutoresService
         return $autor;
     }
 
+    /**
+     * Método responsável por remover o registro de um autor
+     */
     public function delete($id)
     {
         $autor = $this->findById($id);
@@ -72,6 +90,9 @@ class AutoresService
         return $autor->delete();
     }
 
+    /**
+     * Método responsável por listar todos os autores
+     */
     public function listAll()
     {
         $autores = Autor::orderBy('nome', 'asc')->get();

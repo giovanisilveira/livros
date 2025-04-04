@@ -19,7 +19,7 @@ class AssuntosController extends Controller
     public function formulario($id = null, Request $request)
     {
         try{
-            $assunto = AssuntosService::init()->getById($id);
+            $assunto = AssuntosService::init()->getById((int) $id);
 
             return view('assuntosform', ['assunto' => $assunto]);
         } catch (Exception $e) {

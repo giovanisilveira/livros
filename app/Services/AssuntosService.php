@@ -10,11 +10,17 @@ use RuntimeException;
 
 class AssuntosService
 {
+    /**
+     * Inicializador do service
+     */
     static public function init(): AssuntosService
     {
         return new AssuntosService();
     }
 
+    /**
+     * Método responsável por registrar um Assunto de livro
+     */
     public function save(AssuntoDTO $assuntoDTO)
     {
         if (empty($assuntoDTO->codigo)) {
@@ -25,6 +31,9 @@ class AssuntosService
         return $assunto->update($assuntoDTO->toArray());
     }
 
+    /**
+     * Método responsável por recuperar todos os assuntos
+     */
     public function list(int $page = 1, int $qtdItens = 50)
     {
         $assuntos = Assunto::paginate(
@@ -37,11 +46,17 @@ class AssuntosService
         return AssuntoOutputDTO::fromArray($assuntos);
     }
 
-    public function getById($id)
+    /**
+     * Método responsável por recuperar um assunto pelo código
+     */
+    public function getById(int $id)
     {
         return AssuntoOutputDTO::fromObject($this->findById($id));
     }
 
+    /**
+     * Método responsável por recuperar um assunto sem formatação
+     */
     private function findById($id)
     {
         if (empty($id)) {
@@ -57,6 +72,9 @@ class AssuntosService
         return $assunto;
     }
 
+    /**
+     * Método responsável por remover um assunto
+     */
     public function delete($id)
     {
         $assunto = $this->findById($id);
@@ -71,6 +89,9 @@ class AssuntosService
         return $assunto->delete();
     }
 
+    /**
+     * Método responsável por recuperar todos os assuntos
+     */
     public function listAll()
     {
         $assuntos = Assunto::orderBy('descricao', 'asc')->get();
