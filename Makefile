@@ -16,6 +16,7 @@ logs:
 
 build:
 	$(DOCKER_COMPOSE) up --build -d
+	@docker exec -it ${SERVICE_NAME} chmod -R 775 /var/www/html
 	@docker exec -it ${SERVICE_NAME} php ./bin/composer.phar install
 	@docker exec -it ${SERVICE_NAME} php artisan migrate
 
