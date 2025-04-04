@@ -73,7 +73,7 @@ class AssuntosService
             $page
         );
 
-        if ($assuntos->isEmpty()) {
+        if ($assuntos->isEmpty() && $page > 1) {
             throw new RuntimeException("Não há itens na página #$page.");
         }
 

@@ -76,7 +76,7 @@ class AutoresService
             $page
         );
 
-        if ($autores->isEmpty()) {
+        if ($autores->isEmpty() && $page > 1) {
             throw new RuntimeException("Não há itens na página #$page.");
         }
 

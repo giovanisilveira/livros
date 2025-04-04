@@ -88,7 +88,7 @@ class LivrosService
             $page
         );
 
-        if ($livros->isEmpty()) {
+        if ($livros->isEmpty() && $page > 1) {
             throw new RuntimeException("Não há itens na página #$page.");
         }
 
