@@ -30,7 +30,7 @@ Route::get('/autores', [AutoresController::class, 'index'])->name('autores');
 Route::post('/autores', [AutoresController::class, 'salvar']);
 Route::delete('/autores/{id}', [AutoresController::class, 'delete'])->name('autordelete');
 
-Route::get('/livros/relatorio', [LivrosController::class, 'relatorio'])->name('livrosrelatorio');
+Route::get('/livros/relatorio/{tipo?}', [LivrosController::class, 'relatorio'])->name('livrosrelatorio');
 Route::get('/livros/formulario/{id?}', [LivrosController::class, 'formulario'])->name('livrosform');
 Route::get('/livros', [LivrosController::class, 'index'])->name('livros');
 Route::post('/livros', [LivrosController::class, 'salvar']);

@@ -2,14 +2,16 @@
 FROM php:8.0-cli
 
 
-# Instalar dependências necessárias para o Composer
 RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zlib1g-dev \
+    pkg-config \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql gd
 
-# Instalar as extensões do PHP pdo e pdo_mysql
+# Instalar outras extensões PHP necessárias (se houver)
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Baixar e instalar o Composer globalmente

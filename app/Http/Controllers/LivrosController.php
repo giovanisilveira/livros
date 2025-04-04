@@ -6,6 +6,7 @@ use App\DTO\LivroDTO;
 use App\Services\AssuntosService;
 use App\Services\AutoresService;
 use App\Services\LivrosService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -72,10 +73,18 @@ class LivrosController extends Controller
         }
     }
 
-    public function relatorio()
+    public function relatorio($tipo = 'html')
     {
         $dadosRelatorio = LivrosService::init()->relatorio();
+        if ($tipo == 'html') {
+            return view('relatorios.relatorio', compact('dadosRelatorio'));
+        }
 
-        return view('relatorio', compact('dadosRelatorio'));
+        if ($tipo == 'pdf') {
+            $pdf = PDF::loadView('relatorios.relatoriopdf', compact('dadosRelatorio'));
+            $pdf->setPaper('A4', 'landscape');
+
+            return $pdf->stream('relatorio_livros_por_autor.pdf');
+        }
     }
 }

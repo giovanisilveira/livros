@@ -3,6 +3,9 @@
 @section('title', 'Relatório')
 
 @section('content')
+    <a href="/livros/relatorio/pdf" target="_blank" class="btn btn-outline-primary btn-sm">
+        Exibir Relatório PDF
+    </a>
     <div class="container mt-5">
         <h1 class="mb-4 text-center">Relatório de Livros por Autor</h1>
 
@@ -15,7 +18,7 @@
                     <th>Editora</th>
                     <th>Edição</th>
                     <th>Ano de Publicação</th>
-                    <th>Preço</th>
+                    <th class="text-end">Preço</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +33,7 @@
                             <td>{{ $livro->livro_editora }}</td>
                             <td>{{ $livro->livro_edicao }}</td>
                             <td>{{ $livro->livro_anopublicacao }}</td>
-                            <td>R$ {{ number_format($livro->livro_valor / 100, 2, ',', '.') }}</td>
+                            <td class="text-end">R$ {{ number_format($livro->livro_valor / 100, 2, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 @endforeach
