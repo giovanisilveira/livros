@@ -80,7 +80,7 @@ class LivrosService
         );
 
         if ($livros->isEmpty()) {
-            throw new RuntimeException('Não há itens nessa página.');
+            throw new RuntimeException("Não há itens na página #$page.");
         }
 
         $result = LivroOutputDTO::fromArray($livros);

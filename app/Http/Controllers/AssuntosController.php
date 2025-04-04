@@ -18,16 +18,17 @@ class AssuntosController extends Controller
             $assuntos = AssuntosService::init()->list(
                 $search,
                 $request->input('page') ?? 1
-            );
-            Session::forget('error');
-        }catch(Exception $e){
-            Session::put('error', $e->getMessage());
-        }
+            ) ?? [];
 
-        return view('assuntos', [
-            'assuntos' => $assuntos ?? [],
-            'search' => $search,
-        ]);
+            return view('assuntos', [
+                'assuntos' => $assuntos,
+                'search' => $search,
+            ]);
+        }catch(Exception $e){
+            return redirect()
+                ->route('assuntos')
+                ->with('error', $e->getMessage());
+        }
     }
 
     public function formulario($id = null, Request $request)

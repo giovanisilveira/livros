@@ -21,16 +21,17 @@ class LivrosController extends Controller
             $livros = LivrosService::init()->list(
                 $search,
                 $request->input('page') ?? 1
-            );
-            Session::forget('error');
-        }catch(Exception $e){
-            Session::put('error', $e->getMessage());
-        }
+            ) ?? [];
 
-        return view('livros', [
-            'livros' => $livros ?? [],
-            'search' => $search
-        ]);
+            return view('livros', [
+                'livros' => $livros,
+                'search' => $search
+            ]);
+        }catch(Exception $e){
+            return redirect()
+                ->route('livros')
+                ->with('error', $e->getMessage());
+        }
     }
 
     public function formulario($id = null, Request $request)

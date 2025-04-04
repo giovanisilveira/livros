@@ -51,7 +51,7 @@ class AssuntosService
         );
 
         if ($assuntos->isEmpty()) {
-            throw new RuntimeException('Não há itens nessa página.');
+            throw new RuntimeException("Não há itens na página #$page.");
         }
 
         return AssuntoOutputDTO::fromArray($assuntos);

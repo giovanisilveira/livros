@@ -51,7 +51,7 @@ class AutoresService
         );
 
         if ($autores->isEmpty()) {
-            throw new RuntimeException('Não há itens nessa página.');
+            throw new RuntimeException("Não há itens na página #$page.");
         }
 
         return AutorOutputDTO::fromArray($autores);

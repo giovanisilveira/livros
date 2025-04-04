@@ -20,16 +20,17 @@ class AutoresController extends Controller
             $autores = AutoresService::init()->list(
                 $search,
                 $request->input('page') ?? 1
-            );
-            Session::forget('error');
-        }catch(Exception $e){
-            Session::put('error', $e->getMessage());
-        }
+            ) ?? [];
 
-        return view('autores', [
-            'autores' => $autores ?? [],
-            'search' => $search
-        ]);
+            return view('autores', [
+                'autores' => $autores,
+                'search' => $search
+            ]);
+        }catch(Exception $e){
+            return redirect()
+                ->route('autores')
+                ->with('error', $e->getMessage());
+        }
     }
 
     public function formulario($id = null, Request $request)
