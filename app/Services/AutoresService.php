@@ -37,6 +37,7 @@ class AutoresService
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
         $autoresQuery = Autor::query();
+        $autoresQuery->orderBy('nome', 'asc');
 
         if (!empty($search)) {
             $autoresQuery->where('nome', 'like', "%$search%");

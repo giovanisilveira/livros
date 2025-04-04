@@ -66,6 +66,7 @@ class LivrosService
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
         $livrosQuery = Livro::query();
+        $livrosQuery->orderBy('titulo', 'asc');
 
         if (!empty($search)) {
             $livrosQuery->where('titulo', 'like', "%$search%");
@@ -153,7 +154,7 @@ class LivrosService
     public function relatorio()
     {
         $livrosPorAutor = DB::table('autores_livros')
-        ->orderBy('autor_nome')
+        ->orderBy('autor_nome', 'asc')
         ->get();
 
         return $livrosPorAutor->groupBy('autor_nome');

@@ -37,6 +37,7 @@ class AssuntosService
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
         $assuntosQuery = Assunto::query();
+        $assuntosQuery->orderBy('descricao', 'asc');
 
         if (!empty($search)) {
             $assuntosQuery->where('descricao', 'like', "%$search%");
