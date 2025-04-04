@@ -61,16 +61,26 @@ class LivrosService
     }
 
     /**
-     * Método responsável por retornar uma lista de livros
+     * Método responsável por retornar os dados de livros
      */
-    public function list(int $page = 1, int $qtdItens = 50)
+    public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $livros = Livro::with(['assuntos'])->paginate(
+        $livrosQuery = Livro::query();
+
+        if (!empty($search)) {
+            $livrosQuery->where('titulo', 'like', "%$search%");
+        }
+
+        $livros = $livrosQuery->with(['assuntos'])->paginate(
             $qtdItens,
             ['*'],
             'page',
             $page
         );
+
+        if ($livros->isEmpty()) {
+            throw new RuntimeException('Não há itens nessa página.');
+        }
 
         $result = LivroOutputDTO::fromArray($livros);
 

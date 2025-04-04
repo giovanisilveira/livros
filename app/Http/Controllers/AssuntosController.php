@@ -6,14 +6,28 @@ use App\DTO\AssuntoDTO;
 use App\Services\AssuntosService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AssuntosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $assuntos = AssuntosService::init()->list(1);
+        try{
+            $search = $request->input('search') ?? '';
 
-        return view('assuntos', ['assuntos' => $assuntos]);
+            $assuntos = AssuntosService::init()->list(
+                $search,
+                $request->input('page') ?? 1
+            );
+            Session::forget('error');
+        }catch(Exception $e){
+            Session::put('error', $e->getMessage());
+        }
+
+        return view('assuntos', [
+            'assuntos' => $assuntos ?? [],
+            'search' => $search,
+        ]);
     }
 
     public function formulario($id = null, Request $request)

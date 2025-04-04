@@ -9,14 +9,28 @@ use App\Services\LivrosService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class LivrosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $livros = LivrosService::init()->list(1);
+        try{
+            $search = $request->input('search') ?? '';
 
-        return view('livros', ['livros' => $livros]);
+            $livros = LivrosService::init()->list(
+                $search,
+                $request->input('page') ?? 1
+            );
+            Session::forget('error');
+        }catch(Exception $e){
+            Session::put('error', $e->getMessage());
+        }
+
+        return view('livros', [
+            'livros' => $livros ?? [],
+            'search' => $search
+        ]);
     }
 
     public function formulario($id = null, Request $request)

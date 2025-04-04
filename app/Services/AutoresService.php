@@ -34,14 +34,24 @@ class AutoresService
     /**
      * Método responsável por recuperar os dados dos autores
      */
-    public function list(int $page = 1, int $qtdItens = 50)
+    public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $autores = Autor::paginate(
+        $autoresQuery = Autor::query();
+
+        if (!empty($search)) {
+            $autoresQuery->where('nome', 'like', "%$search%");
+        }
+
+        $autores = $autoresQuery->paginate(
             $qtdItens,
             ['*'],
             'page',
             $page
         );
+
+        if ($autores->isEmpty()) {
+            throw new RuntimeException('Não há itens nessa página.');
+        }
 
         return AutorOutputDTO::fromArray($autores);
     }

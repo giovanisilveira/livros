@@ -15,14 +15,23 @@
         </div>
     @endif
 
+    <h1 class="display-7">Autores</h1>
+    <hr class="my-4">
+
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="btn btn-success btn-md" href="/autores/formulario" role="button">Cadastro</a>
         </li>
     </ul>
 
-    <h1 class="display-7">Autores</h1>
-    <hr class="my-4">
+    <div class="container mt-5">
+        <h2>Busca</h2>
+        <form action="/autores" method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Digite sua busca" value="{{$search}}">
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
 
     <div class="container mt-4">
         <table class="table table-bordered">
@@ -51,6 +60,8 @@
             </tbody>
         </table>
     </div>
+
+    @include('paginacao')
 
     <script>
         function confirmDelete(id) {

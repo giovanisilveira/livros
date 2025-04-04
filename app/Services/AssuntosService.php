@@ -32,16 +32,26 @@ class AssuntosService
     }
 
     /**
-     * Método responsável por recuperar todos os assuntos
+     * Método responsável por recuperar os dados dos assuntos
      */
-    public function list(int $page = 1, int $qtdItens = 50)
+    public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $assuntos = Assunto::paginate(
+        $assuntosQuery = Assunto::query();
+
+        if (!empty($search)) {
+            $assuntosQuery->where('descricao', 'like', "%$search%");
+        }
+
+        $assuntos = $assuntosQuery->paginate(
             $qtdItens,
             ['*'],
             'page',
             $page
         );
+
+        if ($assuntos->isEmpty()) {
+            throw new RuntimeException('Não há itens nessa página.');
+        }
 
         return AssuntoOutputDTO::fromArray($assuntos);
     }

@@ -8,14 +8,28 @@ use App\Services\AutoresService;
 use App\Services\LivrosService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AutoresController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $autores = AutoresService::init()->list(1);
+        try{
+            $search = $request->input('search') ?? '';
 
-        return view('autores', ['autores' => $autores]);
+            $autores = AutoresService::init()->list(
+                $search,
+                $request->input('page') ?? 1
+            );
+            Session::forget('error');
+        }catch(Exception $e){
+            Session::put('error', $e->getMessage());
+        }
+
+        return view('autores', [
+            'autores' => $autores ?? [],
+            'search' => $search
+        ]);
     }
 
     public function formulario($id = null, Request $request)
