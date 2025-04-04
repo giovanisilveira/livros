@@ -12,12 +12,21 @@ use RuntimeException;
 
 class LivrosService
 {
+    protected $livroModel;
+
+    public function __construct(Livro $livro)
+    {
+        $this->livroModel = $livro;
+    }
+
     /**
      * Inicializador do service
      */
     static public function init(): LivrosService
     {
-        return new LivrosService();
+        return new LivrosService(
+            new Livro()
+        );
     }
 
     /**
@@ -27,7 +36,7 @@ class LivrosService
     {
         DB::beginTransaction();
         try {
-            $consulta = Livro::where('titulo', $livroDTO->titulo);
+            $consulta = $this->livroModel->where('titulo', $livroDTO->titulo);
 
             // Inserção
             if (empty($livroDTO->codigo)) {
@@ -35,7 +44,7 @@ class LivrosService
                     throw new InvalidArgumentException("Um livro com o título '$livroDTO->titulo' já consta no cadastro.");
                 }
 
-                $livro = Livro::create($livroDTO->toArray());
+                $livro = $this->livroModel->create($livroDTO->toArray());
             }
 
             // Alteração
@@ -45,7 +54,7 @@ class LivrosService
                     throw new InvalidArgumentException("Um livro com o título '$livroDTO->titulo' já consta no cadastro.");
                 }
 
-                $livro = Livro::find($livroDTO->codigo);
+                $livro = $this->livroModel->find($livroDTO->codigo);
                 $livro->update($livroDTO->toArray());
             }
 
@@ -65,7 +74,7 @@ class LivrosService
      */
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $livrosQuery = Livro::query();
+        $livrosQuery = $this->livroModel->query();
         $livrosQuery->orderBy('titulo', 'asc');
 
         if (!empty($search)) {
@@ -110,11 +119,11 @@ class LivrosService
         }
 
         if (empty($with)) {
-            $livro = Livro::find($id);
+            $livro = $this->livroModel->find($id);
         }
 
         if (!empty($with)) {
-            $livro = Livro::with($with)->find($id);
+            $livro = $this->livroModel->with($with)->find($id);
         }
 
         if (!$livro) {

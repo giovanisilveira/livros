@@ -6,16 +6,29 @@ use App\DTO\AssuntoDTO;
 use App\DTO\AssuntoOutputDTO;
 use App\Models\Assunto;
 use App\Models\LivroAssunto;
+use InvalidArgumentException;
 use RuntimeException;
 
 class AssuntosService
 {
+    protected $assuntoModel;
+    protected $livroAssuntoModel;
+
+    public function __construct(Assunto $assunto, LivroAssunto $livroAssunto)
+    {
+        $this->assuntoModel = $assunto;
+        $this->livroAssuntoModel = $livroAssunto;
+    }
+
     /**
      * Inicializador do service
      */
     static public function init(): AssuntosService
     {
-        return new AssuntosService();
+        return new AssuntosService(
+            new Assunto(),
+            new LivroAssunto()
+        );
     }
 
     /**
@@ -23,11 +36,21 @@ class AssuntosService
      */
     public function save(AssuntoDTO $assuntoDTO)
     {
+        $consulta = $this->assuntoModel->where('descricao', $assuntoDTO->descricao);
+
         if (empty($assuntoDTO->codigo)) {
-            return Assunto::create($assuntoDTO->toArray());
+            if (!$consulta->get()->isEmpty()) {
+                throw new InvalidArgumentException("Um assunto com a descrição '$assuntoDTO->descricao' já consta no cadastro.");
+            }
+            return $this->assuntoModel->create($assuntoDTO->toArray());
         }
 
-        $assunto = Assunto::find($assuntoDTO->codigo);
+        $consulta->where('codas', '!=', $assuntoDTO->codigo);
+        if (!$consulta->get()->isEmpty()) {
+            throw new InvalidArgumentException("Um assunto com a descrição '$assuntoDTO->descricao' já consta no cadastro.");
+        }
+
+        $assunto = $this->assuntoModel->find($assuntoDTO->codigo);
         return $assunto->update($assuntoDTO->toArray());
     }
 
@@ -36,7 +59,7 @@ class AssuntosService
      */
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $assuntosQuery = Assunto::query();
+        $assuntosQuery = $this->assuntoModel->query();
         $assuntosQuery->orderBy('descricao', 'asc');
 
         if (!empty($search)) {
@@ -74,7 +97,7 @@ class AssuntosService
             return;
         }
 
-        $assunto = Assunto::find($id);
+        $assunto = $this->assuntoModel->find($id);
 
         if (!$assunto) {
             throw new RuntimeException("O assunto de código #$id não foi encontrado.");
@@ -93,7 +116,7 @@ class AssuntosService
             throw new RuntimeException("Não possível remover o assunto #$id");
         }
 
-        if (!LivroAssunto::where('assunto_codas', $id)->get()->isEmpty()) {
+        if (!$this->livroAssuntoModel->where('assunto_codas', $id)->get()->isEmpty()) {
             throw new RuntimeException("Não é possível remover o assunto #$id, há um livro vinculado a ele.");
         }
 
@@ -105,7 +128,7 @@ class AssuntosService
      */
     public function listAll()
     {
-        $assuntos = Assunto::orderBy('descricao', 'asc')->get();
+        $assuntos = $this->assuntoModel->orderBy('descricao', 'asc')->get();
 
         $result = $assuntos->map(function ($assunto) {
             return [

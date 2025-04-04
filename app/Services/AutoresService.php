@@ -6,16 +6,30 @@ use App\DTO\AutorDTO;
 use App\DTO\AutorOutputDTO;
 use App\Models\Autor;
 use App\Models\LivroAutor;
+use InvalidArgumentException;
 use RuntimeException;
 
 class AutoresService
 {
+
+    protected $autorModel;
+    protected $livroAutorModel;
+
+    public function __construct(Autor $autor, LivroAutor $livroAutor)
+    {
+        $this->autorModel = $autor;
+        $this->livroAutorModel = $livroAutor;
+    }
+
     /**
      * Inicializador do service
      */
     static public function init(): AutoresService
     {
-        return new AutoresService();
+        return new AutoresService(
+            new Autor(),
+            new LivroAutor()
+        );
     }
 
     /**
@@ -23,11 +37,23 @@ class AutoresService
      */
     public function save(AutorDTO $autorDTO)
     {
+        $consulta = $this->autorModel->where('nome', $autorDTO->nome);
+
         if (empty($autorDTO->codigo)) {
-            return Autor::create($autorDTO->toArray());
+            if (!$consulta->get()->isEmpty()) {
+                throw new InvalidArgumentException("Um autor com o nome '$autorDTO->nome' já consta no cadastro.");
+            }
+
+            return $this->autorModel->create($autorDTO->toArray());
         }
 
-        $autor = Autor::find($autorDTO->codigo);
+
+        $consulta->where('codau', '!=', $autorDTO->codigo);
+        if (!$consulta->get()->isEmpty()) {
+            throw new InvalidArgumentException("Um autor com o nome '$autorDTO->nome' já consta no cadastro.");
+        }
+
+        $autor = $this->autorModel->find($autorDTO->codigo);
         return $autor->update($autorDTO->toArray());
     }
 
@@ -36,7 +62,7 @@ class AutoresService
      */
     public function list(string $search, int $page = 1, int $qtdItens = 50)
     {
-        $autoresQuery = Autor::query();
+        $autoresQuery = $this->autorModel->query();
         $autoresQuery->orderBy('nome', 'asc');
 
         if (!empty($search)) {
@@ -74,7 +100,7 @@ class AutoresService
             return;
         }
 
-        $autor = Autor::find($id);
+        $autor = $this->autorModel->find($id);
 
         if (!$autor) {
             throw new RuntimeException("O autor de código #$id não foi encontrado.");
@@ -94,7 +120,7 @@ class AutoresService
             throw new RuntimeException("Não possível remover o autor #$id");
         }
 
-        if (!LivroAutor::where('autor_codau', $id)->get()->isEmpty()) {
+        if (!$this->livroAutorModel->where('autor_codau', $id)->get()->isEmpty()) {
             throw new RuntimeException("Não é possível remover o autor #$id, há um livro vinculado a ele.");
         }
 
@@ -106,7 +132,7 @@ class AutoresService
      */
     public function listAll()
     {
-        $autores = Autor::orderBy('nome', 'asc')->get();
+        $autores = $this->autorModel->orderBy('nome', 'asc')->get();
 
         return AutorOutputDTO::fromArray($autores);
     }
