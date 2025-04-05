@@ -9,6 +9,12 @@ migrations para iniciar o banco de dados base da aplicação
 make build
 ```
 
+## Acesso a aplicação
+Para acessar a aplicação, basta abrir o navegador e entrar no seguinte endereço
+```
+http://localhost:8000
+```
+
 ## Testes
 Para executar os testes da aplicação utilize o seguinte comando
 ```
